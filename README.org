@@ -2,7 +2,8 @@
 * Type-I : type-inference from a predicate
 
 This library tries to provide a way to detect what kind of type the given
-predicate is trying to check. For example,
+predicate is trying to check. *This is different from inferring the return
+type of a function.* For example,
 
 #+BEGIN_SRC lisp
 
