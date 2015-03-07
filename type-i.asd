@@ -24,8 +24,12 @@
                :alexandria
                :optima
                :lisp-namespace)
-  :components ((:module "src"
-                :components
-                ((:file "package"))))
-  :description ""
+  :pathname "src/"
+  :components ((:file "package")
+               (:file "infer-typep")
+               (:file "infer-unary")
+               (:file "infer-derived")
+               (:file "infer-null"))
+  :serial t
+  :description "Type Inference Utility on Fundamentally 1-arg Predicates"
   :in-order-to ((test-op (load-op type-i.test))))
