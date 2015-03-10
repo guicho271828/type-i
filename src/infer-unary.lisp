@@ -19,5 +19,5 @@
 (defun typep-form (typesym)
   (when-let ((compounds (all-compound-types typesym)))
     ;; array, (array), (array *), ...
-    (mapcar (lambda (x) `(typep ? ,x)) compounds)))
+    (mapcar (lambda (x) `(typep ? ',x)) compounds)))
 

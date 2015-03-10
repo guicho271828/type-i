@@ -54,9 +54,8 @@
                    (format t "~& ~<expanded ~a with rule ~a -> ~_~{~a~^, ~:_~}~:>" (list now key successors))
                    (dolist (s successors)
                      (match s
-                       ((list 'typep '? type)
-                        (when (symbolp type)
-                          (return-from test-type type)))))
+                       ((list 'typep '? (list 'quote type))
+                        (return-from test-type type))))
                    (unionf open (set-difference successors closed :test #'equal)
                            :test #'equal)))
                *INFERENCE-RULES-TABLE*))))
