@@ -22,7 +22,7 @@
   :license "LLGPL"
   :depends-on (:introspect-environment
                :alexandria
-               :optima
+               :trivia
                :lisp-namespace)
   :pathname "src/"
   :components ((:file "package")

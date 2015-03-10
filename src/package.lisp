@@ -5,7 +5,7 @@
 
 (in-package :cl-user)
 (defpackage type-i
-  (:use :optima :cl :alexandria :introspect-environment)
+  (:use :trivia :cl :alexandria :introspect-environment)
   (:export
    #:?
    #:test-type
