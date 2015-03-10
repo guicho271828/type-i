@@ -29,7 +29,8 @@
                (:file "infer-typep")
                (:file "infer-unary")
                (:file "infer-derived")
-               (:file "infer-null"))
+               (:file "infer-null")
+               (:file "infer-numbers"))
   :serial t
   :description "Type Inference Utility on Fundamentally 1-arg Predicates"
   :in-order-to ((test-op (load-op type-i.test))))
