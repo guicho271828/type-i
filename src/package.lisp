@@ -50,6 +50,7 @@
          nil)
       (push now closed)
       (maphash (lambda (key fn)
+                 (declare (ignorable key))
                  (when-let ((successors (funcall fn now)))
                    ;;(format t "~& ~<expanded ~a with rule ~a -> ~_~{~a~^, ~:_~}~:>" (list now key successors))
                    (dolist (s successors)
