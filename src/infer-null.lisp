@@ -4,8 +4,9 @@
 ;;; null
 
 (defvar +null-tests+
-    `((null ?)
-      (typep ? 'null)
+    `((typep ? 'null)
+      (typep ? '(eql nil))
+      (null ?)
       (eql ? nil)
       (eql nil ?)
       (eq ? nil)
