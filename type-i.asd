@@ -30,6 +30,7 @@
                (:file "infer-unary")
                (:file "infer-derived")
                (:file "infer-null")
+               (:file "infer-t")
                (:file "infer-numbers"))
   :serial t
   :description "Type Inference Utility on Fundamentally 1-arg Predicates"
