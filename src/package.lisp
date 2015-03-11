@@ -56,7 +56,7 @@
                    (dolist (s successors)
                      (match s
                        ((list 'typep '? (list 'quote type))
-                        ;;(format t "~& Success! type: ~a" type)
+                        ;;(format t "~& test: ~a inferred type: ~a" test type)
                         (return-from test-type type))))
                    (unionf open (set-difference successors closed :test #'equal)
                            :test #'equal)))
