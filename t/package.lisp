@@ -15,12 +15,12 @@
   (subsetp expected actual :test #'equal))
 
 (test test-type
-  (is (eq nil (test-type '(ababa ?))))
-  (is (member (test-type '(eql nil ?)) '(null (eql nil)) :test #'equal))
-  (is (eq 'string (test-type '(stringp ?))))
+  (is (type= nil (test-type '(ababa ?))))
+  (is (type= 'null (test-type '(eql nil ?))))
+  (is (type= 'string (test-type '(stringp ?))))
 
   ;; okay when the test is initially typep
-  (is (eq 'string (test-type '(typep ? 'string))))
+  (is (type= 'string (test-type '(typep ? 'string))))
 
   (is (subset '((TYPEP ? 'FIXNUM)) (type-tests 'fixnum)))
 
@@ -35,17 +35,17 @@
   (is (not (subset '((INTEGERP ?))
                    (type-tests '(mod 5)))))
 
-  (is (equal '(integer 0 5)
+  (is (type= '(integer 0 5)
              (test-type '(< 0 ? 5))))
-  (is (equal '(rational 0 5/2)
+  (is (type= '(rational 0 5/2)
              (test-type '(< 0 ? 5/2))))
-  (is (equal '(single-float 0.0 5.0)
+  (is (type= '(single-float 0.0 5.0)
              (test-type '(< 0.0 ? 5.0))))
-  (is (equal '(double-float 0.0d0 5.0d0)
+  (is (type= '(double-float 0.0d0 5.0d0)
              (test-type '(< 0.0d0 ? 5.0d0))))
-  (is (equal '(float 0.0 5.0d0)
+  (is (type= '(float 0.0 5.0d0)
              (test-type '(< 0.0 ? 5.0d0))))
-  (is (equal '(real 0.0 5)
+  (is (type= '(real 0.0 5)
              (test-type '(< 0.0 ? 5))))
   )
 
