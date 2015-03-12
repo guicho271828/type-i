@@ -16,7 +16,7 @@
 
 (test test-type
   (is (eq nil (test-type '(ababa ?))))
-  (is (eq 'null (test-type '(eql nil ?))))
+  (is (member (test-type '(eql nil ?)) '(null (eql nil)) :test #'equal))
   (is (eq 'string (test-type '(stringp ?))))
 
   (is (subset '((TYPEP ? 'FIXNUM)) (type-tests 'fixnum)))
