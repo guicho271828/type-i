@@ -51,15 +51,15 @@
       (push now closed)
       (maphash (lambda (key fn)
                  (declare (ignorable key))
-                 (when-let ((successors (funcall fn now)))
-                   ;;(format t "~& ~<expanded ~a with rule ~a -> ~_~{~a~^, ~:_~}~:>" (list now key successors))
-                   (dolist (s successors)
-                     (match s
-                       ((list 'typep '? (list 'quote type))
-                        ;;(format t "~& test: ~a inferred type: ~a" test type)
-                        (return-from test-type type))))
-                   (unionf open (set-difference successors closed :test #'equal)
-                           :test #'equal)))
+                 ;;(format t "~& ~<expanded ~a with rule ~a -> ~_~{~a~^, ~:_~}~:>" (list now key successors))
+                 (match now
+                   ((list 'typep '? (list 'quote type))
+                    ;;(format t "~& test: ~a inferred type: ~a" test type)
+                    (return-from test-type type))
+                   (_
+                    (when-let ((successors (funcall fn now)))
+                      (unionf open (set-difference successors closed :test #'equal)
+                              :test #'equal)))))
                *INFERENCE-RULES-TABLE*))))
 
 (defun type-tests (type)

@@ -19,6 +19,9 @@
   (is (member (test-type '(eql nil ?)) '(null (eql nil)) :test #'equal))
   (is (eq 'string (test-type '(stringp ?))))
 
+  ;; okay when the test is initially typep
+  (is (eq 'string (test-type '(typep ? 'string))))
+
   (is (subset '((TYPEP ? 'FIXNUM)) (type-tests 'fixnum)))
 
   (is (subset '((TYPEP ? 'integer)
