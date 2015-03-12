@@ -20,10 +20,10 @@
   (when (member test +null-tests+ :test #'equal)
     +null-tests+))
 
+;; (typep ? '(eql t)) is wrong!
 (define-inference-rule true-tests (test)
   (when (eq test t)
-    '((typep ? 't)
-      (typep ? '(eql t))))) ;; should be quoted, see definition of test-type
+    '((typep ? 't)))) ;; should be quoted, see definition of test-type
 
 (define-inference-rule eql-tests (test)
   (match test

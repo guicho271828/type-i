@@ -39,7 +39,7 @@
   "substitute symbol with '?, canonicalizing the test form amenable for comparison"
   (subst '? symbol test))
 
-(defun test-type (test)
+(defun test-type (test &optional verbose)
   "infer the type which the given test form is trying to test against."
   ;; if the speed matters, it is possible to memoize the result.
   (let (closed)
@@ -51,18 +51,20 @@
       (push now closed)
       (maphash (lambda (key fn)
                  (declare (ignorable key))
-                 ;;(format t "~& ~<expanded ~a with rule ~a -> ~_~{~a~^, ~:_~}~:>" (list now key successors))
                  (match now
                    ((list 'typep '? (list 'quote type))
-                    ;;(format t "~& test: ~a inferred type: ~a" test type)
+                    (when verbose
+                      (format t "~& test: ~a inferred type: ~a" test type))
                     (return-from test-type type))
                    (_
                     (when-let ((successors (funcall fn now)))
+                      (when verbose
+                        (format t "~& ~<expanded ~a with rule ~a -> ~_~{~a~^, ~:_~}~:>" (list now key successors)))
                       (unionf open (set-difference successors closed :test #'equal)
                               :test #'equal)))))
                *INFERENCE-RULES-TABLE*))))
 
-(defun type-tests (type)
+(defun type-tests (type &optional verbose)
   (let (closed)
     (do ((open nil (cdr open))
          (now `(typep ? ',type) (car open)))
@@ -70,7 +72,8 @@
       (push now closed)
       (maphash (lambda (key fn)
                  (when-let ((successors (funcall fn now)))
-                   ;;(format t "~& ~<expanded ~a with rule ~a -> ~_~{~a~^, ~:_~}~:>" (list now key successors))
+                   (when verbose
+                     (format t "~& ~<expanded ~a with rule ~a -> ~_~{~a~^, ~:_~}~:>" (list now key successors)))
                    (unionf open (set-difference successors closed :test #'equal)
                            :test #'equal)))
                *INFERENCE-RULES-TABLE*))))

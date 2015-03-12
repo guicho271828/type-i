@@ -22,6 +22,11 @@
   ;; okay when the test is initially typep
   (is (type= 'string (test-type '(typep ? 'string))))
 
+  (is-false (member '(eql t) (type-tests t) :test #'equal))
+
+  (is (type= T (test-type T)))
+
+
   (is (subset '((TYPEP ? 'FIXNUM)) (type-tests 'fixnum)))
 
   (is (subset '((TYPEP ? 'integer)
