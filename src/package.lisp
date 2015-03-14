@@ -40,14 +40,16 @@
   (subst '? symbol test))
 
 (defun test-type (test &optional verbose)
-  "infer the type which the given test form is trying to test against."
+  "infer the type which the given test form is trying to test against.
+If the values are NIL,T , it means the type is definitely NIL.
+If the values are NIL,NIL , it means the type is not successfully inferred."
   ;; if the speed matters, it is possible to memoize the result.
   (let (closed)
     (do ((open nil (cdr open))
          (now test (car open)))
         ((null now)
          (warn "failed to infer the type from test ~a !" test)
-         nil)
+         (values nil nil))
       (push now closed)
       (maphash (lambda (key fn)
                  (declare (ignorable key))
@@ -55,7 +57,8 @@
                    ((list 'typep '? (list 'quote type))
                     (when verbose
                       (format t "~& test: ~a inferred type: ~a" test type))
-                    (return-from test-type type))
+                    (return-from test-type
+                      (values type t)))
                    (_
                     (when-let ((successors (funcall fn now)))
                       (when verbose
