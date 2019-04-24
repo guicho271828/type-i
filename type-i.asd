@@ -7,14 +7,6 @@
   Author: Masataro Asai (guicho2.71828@gmail.com)
 |#
 
-
-
-(in-package :cl-user)
-(defpackage type-i-asd
-  (:use :cl :asdf))
-(in-package :type-i-asd)
-
-
 (defsystem type-i
   :version "0.1"
   :author "Masataro Asai"
@@ -22,7 +14,7 @@
   :license "LLGPL"
   :depends-on (:introspect-environment
                :alexandria
-               :trivia
+               :trivia.trivial
                :lisp-namespace)
   :pathname "src/"
   :components ((:file "package")
