@@ -34,6 +34,12 @@
     (when (fboundp fnsym)
       `((,fnsym ?)))))
 
+(defun valid-type-specifier-p (object)
+  (declare (optimize (safety 3)))
+  (ignore-errors
+   (typep nil object)
+   t))
+
 (defvar *max-compound-type-arguments* 10)
 (defvar *compound-infer-level*)
 (defun all-compound-types (compound &optional (*compound-infer-level* 0))
@@ -43,17 +49,21 @@
   ;; to signal an error, verified in CCL and SBCL.
   ;; however, we safeguard with *max-level*. for most types it would be enough :)
   ;; Also, if the type is not valid, it returns nil.
-  (unless (< *max-compound-type-arguments* *compound-infer-level*)
-    (handler-case
-        (progn (typep nil compound)
-               (cons compound
-                     (all-compound-types
-                      (if (consp compound) 
-                          `(,@compound *)
-                          `(,compound))
-                      *compound-infer-level*)))
-      (error (c)
-        (declare (ignorable c))
-        nil))))
+  (if (not (valid-type-specifier-p compound))
+      '()
+      (if (subtypep compound '(or structure-object standard-object))
+          (list compound)
+          (labels ((list-compounds (compound more-compounds depth)
+                     (let ((next-compound (if (consp compound)
+                                     `(,@compound *)
+                                     `(,compound))))
+                       (if (or (> depth *max-compound-type-arguments*)
+                               (not (valid-type-specifier-p next-compound)))
+                           (nreverse (cons compound more-compounds))
+                           (list-compounds
+                            next-compound
+                            (cons compound more-compounds)
+                            (1+ depth))))))
+            (list-compounds compound '() *compound-infer-level*)))))
 ;; (all-compound-types '(array))
 ;; ((ARRAY) (ARRAY *) (ARRAY * *))
