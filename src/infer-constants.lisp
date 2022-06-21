@@ -34,6 +34,9 @@
      `((typep ? '(eql ,what))))))
 
 
+;; Wrong inference rule!
+;; This allows equal/equalp tests to be relaxed to just a typep, causing a wrong inference rule.
+#+(or)
 (define-inference-rule equal-equalp-tests (test)
   (match test
     ((or (list 'equal '? what)
