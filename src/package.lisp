@@ -11,7 +11,8 @@
    #:test-type
    #:define-inference-rule
    #:inference-rules
-   #:type-tests))
+   #:type-tests
+   #:failed-type-inference))
 (in-package :type-i)
 
 ;;;    Type and Test Inference
@@ -39,6 +40,12 @@
   "substitute symbol with '?, canonicalizing the test form amenable for comparison"
   (subst '? symbol test))
 
+(define-condition failed-type-inference (warning)
+  ((test :initarg :test))
+  (:report (lambda (condition stream)
+             (with-slots (test) condition
+               (format stream "failed to infer the type from test ~a !" test)))))
+
 (defun test-type (test &optional verbose)
   "infer the type which the given test form is trying to test against.
 If the values are NIL,T , it means the type is definitely NIL.
@@ -48,7 +55,7 @@ If the values are NIL,NIL , it means the type is not successfully inferred."
     (do ((open nil (cdr open))
          (now test (car open)))
         ((null now)
-         (warn "failed to infer the type from test ~a !" test)
+         (warn 'failed-type-inference :test test)
          (values nil nil))
       (push now closed)
       (maphash (lambda (key fn)

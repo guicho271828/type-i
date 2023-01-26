@@ -16,6 +16,7 @@
 
 (test test-type
   (is (type= nil (test-type '(ababa ?))))
+  (signals failed-type-inference (test-type '(ababa ?)))
   (is (type= 'null (test-type '(eql nil ?))))
   (is (type= 'string (test-type '(stringp ?))))
 
